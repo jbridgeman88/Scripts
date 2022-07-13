@@ -1,0 +1,16 @@
+
+<*** USER Email address ***>  = name of user you want to know about
+
+Get-Mailbox -ResultSize Unlimited | Get-MailboxPermission -User <*** USER Email address ***> | Format-Table Identity, AccessRights
+
+
+PS C:\Users\dschmunk> Get-Mailbox -ResultSize Unlimited | Get-MailboxPermission -User halheneiti@mltaikins.com | Format-Table Identity, AccessRights
+
+Identity             AccessRights
+--------             ------------
+Calgary Signing Room {FullAccess}
+Calgary Leslie Room  {FullAccess}
+Calgary Tyerman Room {FullAccess}
+Calgary MacPherso... {FullAccess}
+Calgary_Pletch_Room  {FullAccess}
+Calgary Pletch Room  {FullAccess}

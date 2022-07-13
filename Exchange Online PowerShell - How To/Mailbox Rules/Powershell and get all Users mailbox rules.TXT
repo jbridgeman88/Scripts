@@ -1,0 +1,72 @@
+http://www.bwya77.com/office-365/get-users-outlookinbox-rules-office-365/
+
+ScriptBlock: 
+ 
+
+Get All Inbox Rules for All Mailboxes 
+
+
+
+PowerShell
+
+$users = (get-mailbox -resultsize unlimited).UserPrincipalName
+foreach ($user in $users)
+{
+Get-InboxRule -Mailbox $user | Select-Object MailboxOwnerID,Name,Description,Enabled,RedirectTo, MoveToFolder,ForwardTo | Export-CSV C:\Scripts\testing.csv -NoTypeInformation -Append
+}
+
+
+
+-----------------------------------------
+FOR SINGLE MAILBOX
+
+Get-InboxRule -Mailbox <MLTAIKINS EMAIL ADDRESS OF USER> | Select-Object MailboxOwnerID,Name,Description,Enabled,RedirectTo, MoveToFolder,ForwardTo | Export-CSV C:\Scripts\testing.csv -NoTypeInformation -Append
+
+
+** Do not do not have to export out with:
+| Export-CSV C:\Scripts\testing.csv -NoTypeInformation -Append
+
+
+----------------------------------
+EXAMPLES - SINGLE MAILBOX 
+
+List Inbox Rules:
+
+Get-InboxRule -Mailbox ryaffe@mltaikins.com
+
+Output Example:
+Name       Enabled Priority RuleIdentity
+----       ------- -------- ------------
+march 2019 True    1        9571641743690956802
+
+Get Inbox Rule Details:
+
+Get-InboxRule -Mailbox ryaffe@mltaikins.com -Identity 9571641743690956802 | FL
+
+Output Example:
+Get-InboxRule -Mailbox ryaffe@mltaikins.com -Identity 9571641743690956802 | FL
+
+RunspaceId                            : 40cfd21a-76b5-4d25-8473-2ddeb49ff197
+Description                           : If the message:
+                                                my name is in the To or Cc box
+                                        Take the following actions:
+                                                forward the message to 'Bradley D. G. Zander' as an attachment
+Enabled                               : True
+Identity                              : Richard L. Yaffe\9571641743690956802
+
+Disable Inbox Rule:
+
+Disable-InboxRule -Identity "march 2019" -Mailbox "ryaffe@mltaikins.com"
+
+Confirm Disable:
+
+Get-InboxRule -Mailbox ryaffe@mltaikins.com
+
+
+
+
+
+
+
+
+ 

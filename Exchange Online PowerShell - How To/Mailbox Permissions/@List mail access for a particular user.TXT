@@ -1,0 +1,49 @@
+
+Quickly list all mailboxes to which a particular user has access
+
+
+List all mailboxes to which a particular user has Full Access permissions:
+      Get-Mailbox | Get-MailboxPermission -User vasil
+
+
+List all mailboxes to which a user has Send As permissions:
+     Get-Mailbox | Get-RecipientPermission -Trustee vasil
+
+
+
+List all mailboxes to which a particular security principal has Send on behalf of permissions:
+     Get-Mailbox | ? {$_.GrantSendOnBehalfTo -match "vasil"}
+
+
+
+List all shared/user/room/whatever mailboxes to which particular user has Full Access permissions:
+     Get-Mailbox -RecipientTypeDetails UserMailbox,SharedMailbox -ResultSize Unlimited |      Get-MailboxPermission -User vasil
+
+
+
+Displays all mailboxes where another user has Full Access permissions, and who that user is:
+*** Not working as expected *****
+
+     Get-Mailbox   -resultsize "Unlimited" | Get-MailboxPermission | where { ($_.AccessRights -eq "FullAccess") -and ($_.IsInherited -eq $false) -and -not ($_.User -like "NT AUTHORITY\SELF") } | ft @{Name="Identity";expression={($_.Identity -split "/")[-1]}}, User -AutoSize | Export-CSV "c:\temp\fullpermissions.csv"
+
+
+
+To view information about “Send As” permissions, use the Get-RecipientPermission cmdlet:
+
+     Get-Mailbox -resultsize unlimited | Get-RecipientPermission| where {($_.trustee -ne     "NT AUTHORITY\SELF")}|select     Identity,Trustee,AccessControlType,AccessRights,IsInherited  | Export-Csv -Path "c:\temp\sendaspermissions.csv" –NoTypeInformation
+
+
+
+To view information about “Send on behalf” permissions, cmdlet:
+
+   Get-Mailbox | where {$_.GrantSendOnBehalfTo -ne $null} | select    Name,Alias,UserPrincipalName,PrimarySmtpAddress,@{l='SendOnBehalfOf';e={$_.GrantSendOnBehalfTo -   join ";"}} | Export-CSV "c:\temp\SendOnBehalf.csv"
+
+
+
+....for specific mailbox
+To see who has send on behalf permissions on a specific mailbox, use this cmdlet, replacing mailbox-alias with their alias or email address.
+
+     Get-Mailbox mailbox-alias | select Name,Alias,UserPrincipalName,PrimarySmtpAddress,@    {l='SendOnBehalfOf';e={$_.GrantSendOnBehalfTo -join ";"}} | Export-CSV "c:temp\SendOnBehalf.csv"
+
+
+

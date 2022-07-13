@@ -1,0 +1,99 @@
+
+------------------------------------------
+Vew statistics of Recoverable items
+
+Get-MailboxFolderStatistics -Identity xxxxxxx@mltaikins.com -FolderScope RecoverableItems | Format-Table Name,FolderAndSubfolderSize,ItemsInFolderAndSubfolders -Auto
+
+-----------------------
+Sources
+
+This one includes all types of powershell commands
+https://docs.microsoft.com/en-us/microsoft-365/compliance/delete-items-in-the-recoverable-items-folder-of-mailboxes-on-hold?view=o365-worldwide
+
+-----------------------------------
+
+Export and then purge
+
+Set archiving per mailbox and say archiving anything older than 2 years
+
+	2 year Archive Policy
+
+
+-----------------------------------------------------
+Archiving
+
+Step 1 Review Mailbox
+
+   Get-MailboxFolderStatistics -Identity xxxxxxx@mltaikins.com -FolderScope RecoverableItems | Format-Table name,FolderAndSubfolderSize,ItemsInFolderAndSubfolders -Auto
+
+
+
+Step 2 Enable Archiving
+	Exchange Admin Center
+
+		Security & Complaince
+			Informational: Where to create Policies
+			Rention Policies/Rentention Tags 
+
+		Enable archiving in the OnPrem Exchange first
+			SMLTAEX01
+			Locate user mailbox to enable archiving
+			
+			Sync to cloud with SMLTAADCON
+
+	
+		0365 - Recipients
+			Locate uses Mailbox
+			Open user properties
+				Mailbox Features
+					Retention Policy
+					Set retention Policy "2 Year Archive"
+			Save
+
+		protection.office.com
+			0ffice 365 Security & Compliance
+				Information Goverance
+					Archive
+						Enable on users mailbox
+
+
+This powershell should for Archiving to begin immediately
+	
+		Start-ManagedFolderAssistant -Identity "user"
+
+
+-------------------------------------		
+Step 3  Check archives
+
+Allow 24+ hours to see activity (it varies)
+
+https://www.mozesoft.com/blog/office-365-exchange-online-archive-mailbox-size-reporting-with-powershell/
+
+    Get-MailboxStatistics <indentity> -Archive | Format-List DisplayName,TotalItemSize,ItemCount	
+
+
+
+
+https://gallery.technet.microsoft.com/scriptcenter/Get-Mailbox-and-Archive-4102ee15
+
+
+https://docs.microsoft.com/en-us/exchange/policy-and-compliance/recoverable-items-folder/clean-up-deleted-items?view=exchserver-2019
+
+------------------------------------------------------------------
+Purge Recoverable Items
+https://docs.microsoft.com/en-us/microsoft-365/compliance/delete-items-in-the-recoverable-items-folder-of-mailboxes-on-hold?view=o365-worldwide
+
+Purge Recoverable Items
+
+This example permanently deletes items from the user XXXXX@mltaikins.com Recoverable Items folder and also copies the items to the usernaname-RecoverableItems folder in the Discovery Search Mailbox (a built-in mailbox in Exchange Online).
+
+
+
+
+This only seems to purge the "DiscoveryHolds" Items
+Search-Mailbox -Identity <user> -SearchDumpsterOnly -DeleteContent
+
+
+This one seems to place into a folded in Disovery search Mailbox and then remove fom users Recoverable Items
+Search-Mailbox -Identity <user> -SearchDumpsterOnly -TargetMailbox "Discovery Search Mailbox" -TargetFolder "<user>-RecoverableItems" -DeleteContent
+

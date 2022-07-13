@@ -1,0 +1,43 @@
+All about Litigation Hold
+
+Substitute <Indentity> = xxxxxx@mltaikins.com
+
+
+------------------------
+
+Assign Litigation Hold to a specific recipient (Exchange Online mailbox) + define time range (7 years)
+
+Set-Mailbox <Identity> -LitigationHoldEnabled $True -LitigationHoldDuration 2555
+
+------------------------
+
+Assign Litigation Hold to all of the Exchange Online recipients (Bulk mode)
+
+Get-Mailbox -ResultSize Unlimited -Filter {RecipientTypeDetails -eq "UserMailbox"} | Set-Mailbox -LitigationHoldEnabled $True
+
+------------------------
+
+Assign litigation Hold to Exchange Online recipients that don’t have Litigation Hold
+
+
+
+Get-Mailbox | Where {$_.LitigationHoldEnabled -match "False"} | ForEach-Object {
+$Identity = $_.alias; Set-Mailbox -Identity $Identity -LitigationHoldEnabled $True }
+-------------------------
+
+Assign litigation Hold to Exchange Online recipients that don’t have Litigation Hold and set for 7 years (2555 days)
+
+Get-Mailbox | Where {$_.LitigationHoldEnabled -match "False"} | ForEach-Object {
+$Identity = $_.alias; Set-Mailbox -Identity $Identity -LitigationHoldEnabled $True -LitigationHoldDuration 2555 }
+
+-----------------------
+
+Display information about specific recipient which his mailbox has Litigation Hold
+	
+Get-Mailbox <Identity> | FL LitigationHold*
+
+--------------------------
+
+Remove Litigation Hold to specific recipient (Exchange Online mailbox)
+
+Set-Mailbox <Identity> -LitigationHoldEnabled $False

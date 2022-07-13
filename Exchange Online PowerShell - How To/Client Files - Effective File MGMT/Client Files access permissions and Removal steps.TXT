@@ -1,0 +1,110 @@
+Open Microsoft Exchange Online Powershell Module.
+
+ADDING A USER 
+
+<Lawyer ID> 	= First part that makes up Lawyers's email   ie)Lalji@mltaikins.com
+<Assistant ID> 	= First part that makes up Assisant's email  ie)lpelltier@mltaikins.com
+
+---------------------------------------------------------------------------------------------------
+
+
+
+12-02-2020 - Update: change to Owner based upon request, otherwise continue using PublishingEditor
+		Replace PublishingEditor with Owner where applicable
+
+		Lawyer/Partner to fill out form if requesting Owner
+
+
+Connect with your admin account:
+
+	Connect-EXOPSSession -UserPrincipalName dsadmin@mltaikins.onmicrosoft.com
+
+
+1)	Export lawyers Exchange folder directory list:
+
+	     Get-MailboxFolderStatistics -Identity <Lawyer ID>@mltaikins.com| Select Name,FolderPath,FolderSize,FolderAndSubfolderSize | EXPORT-CSV C:\Exports\ExchangeFolders\<LawyerID>.csv 
+
+
+
+2)	Review the exported CSV file to verify folders and review for any odd characters in path that powershell may not like. Any odd characters found will require the lawyer to rename their folder.
+
+
+
+3)	Get existing folder permissions for Top of Information Store for lawyer. Will give you list of existing users if any that have permissions set already.
+
+	    Get-MailboxFolderPermission <Lawyer ID>
+
+
+
+4)	Set permissions at Top of Information store for the assistant or user to “foldervisible”.
+
+	 ADD-MailboxFolderPermission -Identity <Lawyer ID>@mltaikins.com -User zamancio -AccessRights FOLDERVISIBLE
+
+
+5)	Verify previous permissions set correctly.
+
+	   Get-MailboxFolderPermission <Lawyer ID>
+
+
+
+6)	Set the Default account permissions to “PublishingEditor” on the Client Files folder.
+
+	     Set-MailboxFolderPermission -Identity <Lawyer ID>@mltaikins.com:\".Client Files" -User Default -AccessRights PublishingEditor
+
+	Example as Owner
+	     Set-MailboxFolderPermission -Identity <Lawyer ID>@mltaikins.com:\".Client Files" -User Default -AccessRights Owner
+
+
+
+7)	Verify above permissions set properly.
+
+	    GET-MailboxFolderPermission -Identity <Lawyer ID>@mltaikins.com:\".Client Files"
+ 
+
+
+8)	Change the permission on all folders under the Client Files folder (or whatever name they have used) for the Default account to 'PublishingEditor'.
+
+	     ForEach($f in (Get-MailboxFolderStatistics '<Lawyer ID>' | Where { $_.FolderPath.Contains("/.Client Files") -eq $True } ) ) { $fname = "<Lawyer ID>:" + $f.FolderPath.Replace("/","\");Set-MailboxFolderPermission $fname -User Default -AccessRights PublishingEditor}
+
+
+***** For OWNER (ONLY APPLY IF LAWYER HAS SIGNED OFF ON FORM ******
+
+	Example Owner 
+	    ForEach($f in (Get-MailboxFolderStatistics '<Lawyer ID>' | Where { $_.FolderPath.Contains("/Client Files") -eq $True } ) ) { $fname = "<Lawyer ID>:" + $f.FolderPath.Replace("/","\");Set-MailboxFolderPermission $fname -User Default -AccessRights Owner}
+
+
+9)	Verify permission from above command were set correctly on folders under the client files directory.  
+
+This is examply only.
+
+	      GET-MailboxFolderPermission -Identity <Lawyer ID>@mltaikins.com:\".Client Files\<name of folder>"
+
+
+** You are now finished. Going forward you would only have to add the assistant at the top information store level (step 4).
+
+-----------------------------------------------------------
+REMOVING A USER
+
+
+EXAMPLE Remove lpelletier from alalji' mailbox Client Files
+
+10)	To remove a user’s permissions at a folder level use the following command:
+
+	       REMOVE-MailboxFolderPermission <Lawyer ID> -USER '<Assistant ID>'
+
+ ForEach($f in (Get-MailboxFolderStatistics 'alalji' | Where { $_.FolderPath.Contains("/.Client Files") -eq $True } ) ) { $fname = "<Lawyer ID>:" + $f.FolderPath.Replace("/","\");Set-MailboxFolderPermission $fname -User <Assistant ID> -AccessRights none}
+
+ForEach($f in (Get-MailboxFolderStatistics '<Lawyer ID>' | Where { $_.FolderPath.Contains("/.Client Files") -eq $True } ) ) { $fname = "alalji:" + $f.FolderPath.Replace("/","\");REMOVE-MailboxFolderPermission $fname -User <Assistant ID>}
+
+
+
+
+
+	
+
+
+
+
+
+
+

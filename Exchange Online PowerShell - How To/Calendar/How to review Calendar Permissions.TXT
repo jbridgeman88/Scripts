@@ -1,0 +1,11 @@
+How to review Calendar permissions
+
+
+
+Exchange treats the calendar as a sub-folder of the mailbox, adding :\Calendar to the end of the standard permissions query will work.
+
+So you have the below PowerShell cmdlet:
+
+Get-MailboxFolderPermission -identity "John Smith:\Calendar"
+
+You could also grant yourself full access to the mailbox, open the users calendar via OWA and just right click and view permissions.

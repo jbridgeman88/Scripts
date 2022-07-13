@@ -1,0 +1,106 @@
+
+See my email for prt screens
+
+
+
+Adding, Removing and viewing Permissions
+https://o365info.com/folder-permission-powershell-commands/
+
+The AccessRights parameter also specifies the permissions for the user with the following roles, which are a combination of the rights listed previously:
+
+None 		– FolderVisible
+
+Owner 		– CreateItems, ReadItems, CreateSubfolders, FolderOwner, FolderContact, FolderVisible, EditOwnedItems,EditAllItems, DeleteOwnedItems, DeleteAllItems
+
+PublishingEditor – CreateItems, ReadItems, CreateSubfolders, FolderVisible, EditOwnedItems, EditAllItems, DeleteOwnedItems, DeleteAllItems
+
+Editor 		– CreateItems, ReadItems, FolderVisible, EditOwnedItems, EditAllItems, DeleteOwnedItems, DeleteAllItems
+
+PublishingAuthor – CreateItems, ReadItems, CreateSubfolders, FolderVisible, EditOwnedItems, DeleteOwnedItems
+
+Author 		– CreateItems, ReadItems, FolderVisible, EditOwnedItems, DeleteOwnedItems
+
+NonEditingAuthor – CreateItems, ReadItems, FolderVisible
+
+Reviewer 	– ReadItems, FolderVisible
+
+Contributor 	– CreateItems, FolderVisible
+
+
+
+
+-------------------------------------------------------------------
+Examples to review 
+
+** Can export to a CSV to review and search in a spreadsheet
+	Append with | Export-CSV <File path\Name of file>
+
+
+Get-MailboxFolderStatistics  -Identity JAGIORITIS@MLTAIKINS.COM | Select Name,FolderPath,FolderSiz
+e,FolderAndSubfolderSize
+
+Get-MailboxFolderPermission -identity JAGIORITIS@MLTAIKINS.COM:\Cabinet | select User, FolderName,
+ AccessRight
+
+Get-MailboxFolderPermission -identity JAGIORITIS@MLTAIKINS.COM:\"Client Files" | select User, Fold
+erName, AccessRight
+
+
+
+---------------------------------------------------
+Example Adding
+Add-MailboxFolderPermission -Identity "Rick.Grimes:\Inbox" -User Sly.Stallone -AccessRights Author
+
+
+My Mailbox - Adding a new User
+Get-MailboxFolderPermission -identity dschmunk@MLTAIKINS.COM:\Cabinet\"Test Client" 
+Add-MailboxFolderPermission -Identity dschmunk@MLTAIKINS.COM:\Cabinet\"Test Client" -User <user smtp address> -AccessRights <permission>
+
+--------------------------------------------------
+Example Updating 
+
+My Mailbox - Updating a users Permissions
+Set-MailboxFolderPermission -identity dschmunk@MLTAIKINS.COM:\Cabinet\"Test Client" 
+Set-MailboxFolderPermission -Identity dschmunk@MLTAIKINS.COM:\Cabinet\"Test Client" -User <user smtp address> -AccessRights <permission>
+
+---------------------------------
+
+Example Removing
+Remove-MailboxFolderPermission -identity dschmunk@MLTAIKINS.COM:\Cabinet\"Test Client" 
+Remove-MailboxFolderPermission -Identity dschmunk@MLTAIKINS.COM:\Cabinet\"Test Client" -User <user smtp address> 
+
+
+Remove-MailboxFolderPermission  <Identity>:\calendar  -User <Identity>
+
+Will see a prompt are you sure you want to remove user xxxxxxxx    (Yes , No)
+
+
+
+----------------------------------------------------------------------------
+
+Vanessa Specfic Folders Permission issues
+
+See spreadsheet and highlighted rows
+
+For John A. - Troubleshooting Vanessa's Access to a few folders
+
+
+Get-MailboxFolderPermission -identity JAGIORITIS@MLTAIKINS.COM:\"Client Files\Macklin Credit Union - Tax Issue" | select User, FolderName, AccessRight
+
+Get-MailboxFolderPermission -identity JAGIORITIS@MLTAIKINS.COM:\"Client Files\Margaret Carroll - Tax Issues [GTM File]" | select User, FolderName, AccessRight
+
+Get-MailboxFolderPermission -identity JAGIORITIS@MLTAIKINS.COM:\"Client Files\NoLimit Hospitality - Tax Reassessment" | select User, FolderName, AccessRight
+
+Get-MailboxFolderPermission -identity JAGIORITIS@MLTAIKINS.COM:\"Client Files\Akhane Thipavong - CRA Audit and Dispute" | select User, FolderName, AccessRight
+
+---------------------------------
+Update to permssions
+sample 
+Set-MailboxFolderPermission -identity <usermailbox>@mltaikins.com:\"Client Files\<folder name>" -User <user that you are granting>@mltaikins.com -AccessRights PublishingAuthor
+
+
+
+Set-MailboxFolderPermission -identity JAGIORITIS@MLTAIKINS.COM:\"Client Files\NoLimit Hospitality - Tax Reassessment" -User vwarkentin@mltaikins.com -AccessRights Owner
+
+Set-MailboxFolderPermission -identity JAGIORITIS@MLTAIKINS.COM:\"Client Files\Akhane Thipavong - CRA Audit and Dispute" -User vwarkentin@mltaikins.com -AccessRights Owner
+

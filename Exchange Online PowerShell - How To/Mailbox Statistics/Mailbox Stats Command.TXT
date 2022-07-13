@@ -1,0 +1,35 @@
+https://practical365.com/exchange-server/reporting-mailbox-folder-sizes-with-power
+
+
+Get-MailboxFolderStatistics -Identity gfleetwood@mltaikins.com -FolderScope RecoverableItems |Format-Table Name,FolderAndSubfolderSize,ItemsInFolderAndSubfolders -Auto
+
+
+------------------------------------------------
+Also to review Archive
+
+
+Get-MailBoxStatistics gfleetwood@mltaikins.com -Archive |Format-List DisplayName,TotalItemSize,Itemcount
+
+Get-MailboxfolderStatistics wskelly@mltaikins.com -Archive |Format-table name,folderpath,itemsinfolder,foldersize
+
+Get-Mailboxfolderstatistics -identity gfleetwood@mltaikins.com -folderscope recoverableitems | format-table name,folderandsubfoldersize,itemsinfolderandsubfolders
+
+Get-MailboxStatistics -Identity gfleetwood@mltaikins.com -Archive | Select DisplayName, StorageLimitStatus, TotalItemSize, TotalDeletedItemSize, ItemCount, DeletedItemCount
+
+
+Get-MailboxStatistics -Identity gfleetwood@mltaikins.com -Archive | Format-Table DisplayName, StorageLimitStatus, TotalItemSize, TotalDeletedItemSize, ItemCount, DeletedItemCount
+
+
+
+
+To View Online
+https://protection.office.com/archiving
+
+View Mailbox Usage
+https://admin.microsoft.com/AdminPortal/Home#/reportsUsage/MailboxUsage
+
+
+
+https://community.spiceworks.com/topic/1570991-ps-mailbox-itemcount-from-said-dates
+
+

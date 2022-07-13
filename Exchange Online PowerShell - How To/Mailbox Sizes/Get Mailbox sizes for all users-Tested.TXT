@@ -1,0 +1,12 @@
+
+https://morgantechspace.com/2016/10/check-mailbox-size-and-usage-report-powershell.html
+
+
+Find Mailbox Size for all Office 365 users
+
+You can use the powershell cmdlet Get-Mailbox to get all the mailboxes and pipe the results into Get-MailboxStatistics cmdlet to get mailbox size for all users.
+
+
+Get-Mailbox -ResultSize Unlimited  | Get-MailboxStatistics | Select DisplayName, @{n=”Total Size (MB)”;e={[math]::Round(($_.TotalItemSize.ToString().Split("(")[1].Split(" ")[0].Replace(",","")/1MB),2)}}, StorageLimitStatus
+
+

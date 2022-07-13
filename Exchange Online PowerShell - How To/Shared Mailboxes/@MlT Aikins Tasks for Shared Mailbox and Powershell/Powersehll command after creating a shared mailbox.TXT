@@ -1,0 +1,4 @@
+
+For all new shared mailboxes.
+
+set-mailbox <mailbox name> -MessageCopyForSentAsEnabled $True

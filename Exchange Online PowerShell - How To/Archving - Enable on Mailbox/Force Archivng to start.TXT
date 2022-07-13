@@ -1,0 +1,13 @@
+Start-ManagedFolderAssistant -Identity <mailbox>
+
+May have to ue the guid of proiamry mailbox
+
+Locate Guid
+   get-mailboxLocation –user user@example.com.au | fl MailboxGuid,mailboxLocationType
+
+
+Re-run command with Guid
+	Start-ManagedFolderAssistant  <guid value>
+
+
+Note: User may have to logon to OWA at least once to kick things off.

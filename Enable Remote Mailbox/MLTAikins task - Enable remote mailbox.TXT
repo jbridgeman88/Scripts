@@ -1,0 +1,7 @@
+
+Perform on SMLTAEX01
+
+Launch Exchange Management Shell
+
+
+enable-RemoteMailbox -remoteroutingaddress  <userid>@mltaikins.onmicrosoft.com -identity <userid>@mltaikins.com
