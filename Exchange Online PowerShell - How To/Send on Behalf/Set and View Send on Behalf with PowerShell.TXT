@@ -1,9 +1,0 @@
-Set and View Send on Behalf using PowerShell
-
-
-Set-Mailbox MDerendube@mltaikins.com -GrantSendonBehalfTo @{add="Ameena Quazi"}
-
-Get-Mailbox MDerendube@mltaikins.com | fl displayname, GrantSendOnBehalfTo
-
-
-
