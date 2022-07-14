@@ -7,7 +7,7 @@ Set and View Send on Behalf using PowerShell
 
 #>
 
-Set-Mailbox "$userID1@mltaikins.com -GrantSendonBehalfTo @{add=$userID2@mltaikins.com}"
+Set-Mailbox "$userID1@mltaikins.com -GrantSendonBehalfTo @{add=$userID2@mltaikins.com}" 
 
 
 
