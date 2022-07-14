@@ -23,9 +23,9 @@ Connect-MsolService
 
 
 Run the following to check forwarding on a Mailbox:
-.\Get-MailboxForwarding jsalgado@mltaikins.com
+.\Get-MailboxForwarding.ps1 jsalgado
 
 #>
 
 $userEmail = $args[0]
-Get-Mailbox $userEmail | FL DeliverToMailboxAndForward,ForwardingAddress,ForwardingSmtpAddress
+Get-Mailbox $userEmail@mltaikins.com | FL DeliverToMailboxAndForward,ForwardingAddress,ForwardingSmtpAddress
